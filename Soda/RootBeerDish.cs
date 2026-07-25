@@ -34,11 +34,11 @@ namespace KitchenDrinksMod.Soda
         };
         public override Dictionary<Locale, string> Recipe => new Dictionary<Locale, string>
         {
-            { Locale.English, "Dispense desired flavor of soda into a cup" }
+            { Locale.English, "Dispense root beer into a cup" }
         };
         public override List<(Locale, UnlockInfo)> InfoList => new()
         {
-            (Locale.English, LocalisationUtils.CreateUnlockInfo("Root Beer", "Adds root beer as a starter", "Offers a fourth flavour of soda"))
+            (Locale.English, LocalisationUtils.CreateUnlockInfo("Root Beer", "Adds root beer as a starter", "Offers a fourth flavor of soda"))
         };
     }
 }

@@ -65,7 +65,7 @@ namespace KitchenDrinksMod.Boba
         };
         public override Dictionary<Locale, string> Recipe => new Dictionary<Locale, string>
         {
-            { Locale.English, "Add boba pearls to water in pot and cook. Combine cooked boba with appropriate tea, then add milk and serve" }
+            { Locale.English, "Add boba pearls to water in pot and cook. Combine cup with cooked boba and appropriate tea, then add milk and serve" }
         };
         public override List<(Locale, UnlockInfo)> InfoList => new()
         {

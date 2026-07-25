@@ -286,7 +286,9 @@ public class AssetBundler
             {
                 if (renderer.sharedMaterials.Any(m => m != null))
                 {
-                    Debug.LogWarningFormat("Material found attached to bundle prefab in \"{0}\" at \"<root>/{1}\"! This is likely a mistake. To avoid log spam and texturing issues, you should remove these materials or set them to \"None\".", path, GetGameObjectPath(renderer.transform).Split(new char[] { '/' }, 3)[2]);
+                    string[] pathParts = GetGameObjectPath(renderer.transform).Split(new char[] { '/' }, 3);
+                    string relativePath = pathParts.Length > 2 ? pathParts[2] : "<prefab root>";
+                    Debug.LogWarningFormat("Material found attached to bundle prefab in \"{0}\" at \"<root>/{1}\"! This is likely a mistake. To avoid log spam and texturing issues, you should remove these materials or set them to \"None\".", path, relativePath);
                     ++NumWarnings;
                 }
             }

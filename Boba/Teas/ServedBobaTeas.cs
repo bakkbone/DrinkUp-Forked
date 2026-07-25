@@ -120,6 +120,11 @@ namespace KitchenDrinksMod.Boba
         protected abstract string LiquidMaterial { get; }
         protected abstract string LidMaterial { get; }
         protected abstract string ColorblindLabel { get; }
+        
+        // TEMPORARY DEBUG: unconditional override to test whether the core game reads this
+        // static property instead of / in addition to CWaitingForItem.DirtItem set at runtime
+        // by ThrowOutCupsSystem. Remove or make conditional on the unlock card once confirmed.
+        public override Item ExtendedDirtItem => Refs.DirtyBobaCup;
 
         public override string UniqueNameID => $"Boba Tea - {Name} - Serving";
         public override GameObject Prefab => Prefabs.Find("BobaCupPrefab", $"{Name}Served");

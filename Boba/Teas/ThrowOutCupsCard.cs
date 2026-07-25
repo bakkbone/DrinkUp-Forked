@@ -37,9 +37,11 @@ namespace KitchenDrinksMod.Boba
         };
     }
 
-    [UpdateAfter(typeof(GroupReceiveItem))]
+    [UpdateAfter(typeof(GroupReceiveDrink))]
     public class ThrowOutCupsSystem : GameSystemBase
     {
+        internal static bool CardActive = false;   // ADD THIS LINE
+
         private EntityQuery AllOrderedItems;
 
         protected override void Initialise()
@@ -51,7 +53,9 @@ namespace KitchenDrinksMod.Boba
 
         protected override void OnUpdate()
         {
-            if (!HasStatus(ThrowOutCupsCard.RestaurantStatus))
+            CardActive = HasStatus(ThrowOutCupsCard.RestaurantStatus);   // ADD THIS LINE
+
+            if (!CardActive)   // CHANGED from: if (!HasStatus(ThrowOutCupsCard.RestaurantStatus))
             {
                 return;
             }
@@ -66,6 +70,7 @@ namespace KitchenDrinksMod.Boba
 
                     if (orderedItem.ItemID == Refs.ServedBlackTea.ID || orderedItem.ItemID == Refs.ServedMatchaTea.ID || orderedItem.ItemID == Refs.ServedTaroTea.ID)
                     {
+                        Mod.LogInfo($"[ThrowOutCupsSystem] Matched tea item {orderedItem.ItemID}, setting DirtItem to {Refs.DirtyBobaCup.ID}. Was previously {orderedItem.DirtItem}.");
                         orderedItem.DirtItem = Refs.DirtyBobaCup.ID;
                     }
 
