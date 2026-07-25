@@ -10,21 +10,21 @@ namespace KitchenDrinksMod.Soda
 {
     public class RedSoda : BaseSoda
     {
-        protected override string Name => "Doka-Dola";
+        protected override string Name => "Red";
         protected override string LiquidMaterial => "RedLiquid";
-        public override string ColourBlindTag => "D";
+        public override string ColourBlindTag => "R";
     }
 
     public class GreenSoda : BaseSoda
     {
-        protected override string Name => "Shprit";
+        protected override string Name => "Green";
         protected override string LiquidMaterial => "GreenLiquid";
-        public override string ColourBlindTag => "S";
+        public override string ColourBlindTag => "G";
     }
 
     public class BlueSoda : BaseSoda
     {
-        protected override string Name => "Bepis";
+        protected override string Name => "Blue";
         protected override string LiquidMaterial => "BlueLiquid";
         public override string ColourBlindTag => "B";
     }
