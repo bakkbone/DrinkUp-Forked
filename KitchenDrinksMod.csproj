@@ -10,7 +10,7 @@
 	
 	<!-- Absolute Path to PlateUp.exe   e.g: C:\\Program Files (x86)\\Steam\\SteamLibrary\\steamapps\\common\\PlateUp\\PlateUp -->
 	<PropertyGroup>
-		<PlateUpGameFolder>C:\Program Files (x86)\Steam\steamapps\common\PlateUp\PlateUp</PlateUpGameFolder>
+		<PlateUpGameFolder>G:\Steam\steamapps\common\PlateUp\PlateUp</PlateUpGameFolder>
 		<WorkshopDir>$(ProjectDir)content</WorkshopDir>
 		<EnableAssetBundleDeploy>true</EnableAssetBundleDeploy>
 		<AssetBundlePath>$(ProjectDir)content\mod.assets</AssetBundlePath>

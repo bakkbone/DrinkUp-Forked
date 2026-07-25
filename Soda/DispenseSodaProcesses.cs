@@ -7,17 +7,17 @@ namespace KitchenDrinksMod.Soda
 {
     public class DispenseRedSoda : DispenseSodaProcess
     {
-        protected override string Name => "Red";
+        protected override string Name => "Doka-Dola";
     }
 
     public class DispenseGreenSoda : DispenseSodaProcess
     {
-        protected override string Name => "Green";
+        protected override string Name => "Shprit";
     }
 
     public class DispenseBlueSoda : DispenseSodaProcess
     {
-        protected override string Name => "Blue";
+        protected override string Name => "Bepis";
     }
 
     public class DispenseRootBeer : DispenseSodaProcess

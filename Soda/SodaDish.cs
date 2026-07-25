@@ -51,7 +51,7 @@ namespace KitchenDrinksMod.Soda
         };
         public override List<(Locale, UnlockInfo)> InfoList => new()
         {
-            (Locale.English, LocalisationUtils.CreateUnlockInfo("Soda", "Adds fountain drinks as a starter", "Offers three flavours of soda"))
+            (Locale.English, LocalisationUtils.CreateUnlockInfo("Soda", "Adds fountain drinks as a starter", "Offers three flavors of soda"))
         };
     }
 }
