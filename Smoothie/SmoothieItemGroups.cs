@@ -29,8 +29,8 @@ namespace KitchenDrinksMod.Smoothie
             prefab.ApplyMaterialToChild("Cup", MaterialUtils.GetMaterialArray("Door Glass", "Door Glass", "Door Glass"));
 
             // Liquid
-            prefab.ApplyMaterialToChild("Liquid", "drinkup:smoothie_liquid", "drinkup:smoothie_liquid", "drinkup:smoothie_liquid", "drinkup:smoothie_liquid");
-            prefab.ApplyMaterialToChild("Liquid2", "drinkup:smoothie_liquid", "drinkup:smoothie_liquid", "drinkup:smoothie_liquid", "drinkup:smoothie_liquid");
+            prefab.ApplyMaterialToChild("Liquid", "drinkup_smoothie_liquid", "drinkup_smoothie_liquid", "drinkup_smoothie_liquid", "drinkup_smoothie_liquid");
+            prefab.ApplyMaterialToChild("Liquid2", "drinkup_smoothie_liquid", "drinkup_smoothie_liquid", "drinkup_smoothie_liquid", "drinkup_smoothie_liquid");
 
             // Setup the ItemGroupView
             prefab.GetComponent<BlenderCupItemGroupView>()?.Setup(prefab);

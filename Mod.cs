@@ -84,6 +84,7 @@ namespace KitchenDrinksMod
         {
             AddMaterial(MaterialUtils.CreateFlat("drinkup_orange_straw", 0xCF8702));
             AddMaterial(MaterialUtils.CreateFlat("drinkup_root_beer_liquid", 0x321F1F));
+            AddMaterial(MaterialUtils.CreateFlat("drinkup_smoothie_liquid", 0xE86A9A));
         }
 
         /// <summary>
