@@ -28,7 +28,7 @@ namespace KitchenDrinksMod.Boba
                     HasSeenEating = false
                 });
 
-                Mod.LogInfo($"[GateDirtyCupsPatch] Registered pending dirty cup for Group={details.Group}, TableSet={details.TableSet}.");
+                // Mod.LogInfo($"[GateDirtyCupsPatch] Registered pending dirty cup for Group={details.Group}, TableSet={details.TableSet}.");
             }
 
             return false;

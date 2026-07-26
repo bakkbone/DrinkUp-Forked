@@ -33,7 +33,7 @@ namespace KitchenDrinksMod
         public const bool DEBUG_MODE = false;
 #endif
 
-        public const bool SMOOTHIE_CARDS_ENABLED = false;
+        public const bool SMOOTHIE_CARDS_ENABLED = true;
 
         public static AssetBundle Bundle;
         public static readonly PreferenceManager PreferenceManager = new(MOD_GUID);

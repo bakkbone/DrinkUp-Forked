@@ -144,7 +144,7 @@ namespace KitchenDrinksMod.Boba
             EntityManager.AddComponentData(dirtyCupEntity, new CStoredBy { Storage = firstPart });
             EntityManager.GetBuffer<CItemStored>(firstPart).Add(new CItemStored { StoredItem = dirtyCupEntity });
 
-            Mod.LogInfo($"[ThrowOutCupsSystem] Spawned dirty cup entity {dirtyCupEntity} after eating finished.");
+            // Mod.LogInfo($"[ThrowOutCupsSystem] Spawned dirty cup entity {dirtyCupEntity} after eating finished.");
         }
     }
 }

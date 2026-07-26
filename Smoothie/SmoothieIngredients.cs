@@ -93,7 +93,7 @@ namespace KitchenDrinksMod.Smoothie
             {
                 Name = "bananas",
                 BaseItem = () => Refs.Find<Item>(IngredientLib.References.GetIngredient("chopped banana")),
-                Instructions = "peeled bananas",
+                Instructions = "peeled and chopped bananas",
                 CardNumber = 0,
                 StartingIngredients = new() { () => Refs.Find<Item>(IngredientLib.References.GetIngredient("banana")) },
                 Color = MakeColor(255, 251, 201, 255),
