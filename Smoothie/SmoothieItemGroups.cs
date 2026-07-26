@@ -51,9 +51,6 @@ namespace KitchenDrinksMod.Smoothie
 
             prefab.ApplyMaterialToChild("Ingredients/Nuts/Model", "Cashew");
 
-            prefab.ApplyMaterialToChild("Ingredients/Mandarins/Mandarin1/Model", "Mandarin Skin");
-            prefab.ApplyMaterialToChild("Ingredients/Mandarins/Mandarin2/Model", "Mandarin Skin");
-
             prefab.ApplyMaterialToChild("Ingredients/Lemon", IL("Lemon"), IL("Lemon Inner"), IL("White Fruit"));
 
             prefab.ApplyMaterialToChild("Ingredients/Lime", IL("Lime"), IL("Lime Inner"), IL("White Fruit"));

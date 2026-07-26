@@ -126,18 +126,6 @@ namespace KitchenDrinksMod.Smoothie
             },
             new SmoothieIngredient
             {
-                Name = "mandarins",
-                BaseItem = () => Refs.Find<Item>(ItemReferences.MandarinSlice),
-                Instructions = "one mandarin slice",
-                CardNumber = 1,
-                StartingIngredients = new() { () => Refs.Find<Item>(ItemReferences.MandarinRaw) },
-                Color = MakeColor(240, 129, 19, 255),
-                ColorblindLabel = "Ma",
-                IconString = MakeIcon("orange"),
-                UnblendedModelChild = "Ingredients/Mandarins",
-            },
-            new SmoothieIngredient
-            {
                 Name = "lemons",
                 BaseItem = () => Refs.Find<Item>(ItemReferences.LemonSliced),
                 Instructions = "chopped lemons",
