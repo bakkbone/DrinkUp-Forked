@@ -14,20 +14,27 @@ namespace KitchenDrinksMod.Boba
                             || details.DeliveredItem == Refs.ServedMatchaTea.ID
                             || details.DeliveredItem == Refs.ServedTaroTea.ID;
 
-            Mod.LogInfo($"[GateDirtyCupsPatch] HandleSatisfiedOrder for DeliveredItem={details.DeliveredItem}, isOurTea={isOurTea}, CardActive={ThrowOutCupsSystem.CardActive}");
-
             if (!isOurTea)
             {
                 return true;
             }
-            return ThrowOutCupsSystem.CardActive; // only proceed (spawn dirty cup) if the card is active
+
+            if (ThrowOutCupsSystem.CardActive)
+            {
+                ThrowOutCupsSystem.PendingDirtyCups.Add(new ThrowOutCupsSystem.PendingDirtyCup
+                {
+                    Group = details.Group,
+                    TableSet = details.TableSet,
+                    HasSeenEating = false
+                });
+
+                Mod.LogInfo($"[GateDirtyCupsPatch] Registered pending dirty cup for Group={details.Group}, TableSet={details.TableSet}.");
+            }
+
+            return false;
         }
     }
 
-    // Diagnostic: identify which InteractionSystem subclass is throwing MissingMethodException
-    // when handling the dirty cup transfer, and suppress it so it doesn't keep crash-looping
-    // while we investigate. This does NOT fix the underlying issue - it's purely to gather
-    // information and prevent disruption in the meantime.
     [HarmonyPatch(typeof(InteractionSystem), "<OnUpdate>b__24_0")]
     internal static class DiagnoseInteractionCrashPatch
     {
@@ -36,10 +43,10 @@ namespace KitchenDrinksMod.Boba
             if (__exception is MissingMethodException)
             {
                 Mod.LogInfo($"[DiagnoseInteractionCrashPatch] Suppressed MissingMethodException in InteractionSystem subclass: {__instance.GetType().FullName}");
-                return null; // suppress the exception
+                return null;
             }
 
-            return __exception; // let anything else propagate normally
+            return __exception;
         }
     }
 }
