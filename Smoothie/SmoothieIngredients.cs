@@ -146,7 +146,7 @@ namespace KitchenDrinksMod.Smoothie
                 Color = MakeColor(83, 146, 49, 255),
                 ColorblindLabel = "Li",
                 IconString = MakeIcon("lime"),
-                UnblendedModelChild = "Ingredients/Lime",
+                UnblendedModelChild = "Ingredients/chopped_lime",
             },
 
             new SmoothieIngredient
@@ -157,7 +157,7 @@ namespace KitchenDrinksMod.Smoothie
                 Color = MakeColor(144, 0, 49, 255),
                 ColorblindLabel = "Ch",
                 IconString = MakeIcon("cherry"),
-                UnblendedModelChild = "Ingredients/Cherries",
+                UnblendedModelChild = "Ingredients/Cherry2",
             },
             new SmoothieIngredient
             {
