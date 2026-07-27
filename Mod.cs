@@ -51,10 +51,14 @@ namespace KitchenDrinksMod
         {
             LogInfo("Attempting to register game data...");
 
+            // Smoothies
+            // Must run before RegisterModGDOs, since SmoothieItemGroups.OnRegister builds
+            // ColorModifierMap from ingredient.BlendedEquivalent, which looks up these
+            // items by name - they need to already exist by that point.
+            BlendedSmoothieIngredients.Create();
+
             ModGDOs.RegisterModGDOs(this, Assembly.GetExecutingAssembly());
 
-            // Smoothies
-            BlendedSmoothieIngredients.Create();
             if (SMOOTHIE_CARDS_ENABLED)
             {
                 SmoothieCards.Create();

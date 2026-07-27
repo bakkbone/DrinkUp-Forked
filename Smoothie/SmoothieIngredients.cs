@@ -75,7 +75,7 @@ namespace KitchenDrinksMod.Smoothie
                 Color = MakeColor(187, 34, 34, 255),
                 ColorblindLabel = "Ap",
                 IconString = MakeIcon("apple"),
-                UnblendedModelChild = "Ingredients/Apples",
+                UnblendedModelChild = "Ingredients/Apple1",
             },
             new SmoothieIngredient
             {
