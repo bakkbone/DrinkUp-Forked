@@ -214,7 +214,7 @@ namespace KitchenDrinksMod.Smoothie
                 }
                 var finalColor = res / colors.Count;
 
-                Material mat = new(Shader.Find("Simple Flat"));
+                Material mat = new(liquidRenderer.sharedMaterial);
                 mat.SetColor("_Color0", finalColor);
 
                 Liquid.SetActive(true);
