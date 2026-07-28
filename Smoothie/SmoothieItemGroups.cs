@@ -206,19 +206,29 @@ namespace KitchenDrinksMod.Smoothie
                 })
                 .ToList();
 
+            Liquid = prefab.GetChild("Liquid");
+            Liquid2 = prefab.GetChild("Liquid2");
+        }
+
+        private void RebuildColorMaps()
+        {
+            // Rebuilt on every PerformUpdate rather than cached once in Setup(), since
+            // Setup() can run before ingredient.BlendedEquivalent's dynamically-registered
+            // "X - blended" items are reliably resolvable via Refs.Find - by the time
+            // PerformUpdate actually runs (live gameplay), all game data is guaranteed loaded.
             ColorModifiers = SmoothieIngredients.AllIngredients
-                .SelectMany(ingredient => new List<LiquidColor>() {
+                .SelectMany(ingredient => ingredient.BlendedEquivalent != null ? new List<LiquidColor>() {
                     new LiquidColor {
                         Item = ingredient.BlendedEquivalent,
                         Color = ingredient.Color
                     }
-                })
+                } : new())
                 .ToList();
 
             ColorModifierMap = ColorModifiers.ToDictionary(el => el.Item.ID, el => el.Color);
 
             SmallColorModifiers = SmoothieIngredients.AllIngredients
-                .SelectMany(ingredient => ingredient.UnblendedModelColor != default ? new List<LiquidColor>() {
+                .SelectMany(ingredient => ingredient.UnblendedModelColor != default && ingredient.Item != null ? new List<LiquidColor>() {
                     new LiquidColor {
                         Item = ingredient.Item,
                         Color = ingredient.UnblendedModelColor,
@@ -227,13 +237,11 @@ namespace KitchenDrinksMod.Smoothie
                 .ToList();
 
             SmallColorModifierMap = SmallColorModifiers.ToDictionary(el => el.Item.ID, el => el.Color);
-
-            Liquid = prefab.GetChild("Liquid");
-            Liquid2 = prefab.GetChild("Liquid2");
         }
 
         public new void PerformUpdate(int item_id, ItemList components)
         {
+            RebuildColorMaps();
             if (SubviewPrefab != null)
             {
                 if (Subview == null)
