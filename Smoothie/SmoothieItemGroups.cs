@@ -216,10 +216,18 @@ namespace KitchenDrinksMod.Smoothie
             // Setup() can run before ingredient.BlendedEquivalent's dynamically-registered
             // "X - blended" items are reliably resolvable via Refs.Find - by the time
             // PerformUpdate actually runs (live gameplay), all game data is guaranteed loaded.
+            // NOTE: keyed by ingredient.Item (raw), not ingredient.BlendedEquivalent.
+            // The dynamically-generated "X - blended" CustomItem types (BlendedSmoothieIngredient<DummyClasses.Dn>)
+            // reliably fail KitchenLib's GDO registration/auto-fix step (confirmed via player log -
+            // every one of them logs "Failed to register correctly. Attempting to fix..." and never
+            // gets a matching "Successfully fixed", unlike every other mod's items in the same session).
+            // Since those items never become fully valid, keying on them here never matches the
+            // actual component IDs at runtime. The raw Item is reliable (same pattern ComponentGroups
+            // and SmallColorModifierMap already use successfully), so use that instead.
             ColorModifiers = SmoothieIngredients.AllIngredients
-                .SelectMany(ingredient => ingredient.BlendedEquivalent != null ? new List<LiquidColor>() {
+                .SelectMany(ingredient => ingredient.Item != null ? new List<LiquidColor>() {
                     new LiquidColor {
-                        Item = ingredient.BlendedEquivalent,
+                        Item = ingredient.Item,
                         Color = ingredient.Color
                     }
                 } : new())
@@ -242,6 +250,7 @@ namespace KitchenDrinksMod.Smoothie
         public new void PerformUpdate(int item_id, ItemList components)
         {
             RebuildColorMaps();
+            Mod.LogInfo($"[SmoothieDebug] components=[{string.Join(",", components)}] ColorModifierMap keys=[{string.Join(",", ColorModifierMap.Keys)}] SmallColorModifierMap keys=[{string.Join(",", SmallColorModifierMap.Keys)}]");
             if (SubviewPrefab != null)
             {
                 if (Subview == null)
