@@ -125,6 +125,13 @@ namespace KitchenDrinksMod.Smoothie
                 .ToList();
 
             Liquid = prefab.GetChild("Cup(Clone)/Model/Liquid");
+
+            foreach (var ingredient in SmoothieIngredients.AllIngredients)
+            {
+                var rawId = ingredient.Item?.ID;
+                var blendedId = ingredient.BlendedEquivalent?.ID;
+                Mod.LogInfo($"[SmoothieDebug][IDTable] {ingredient.Name}: rawId={(rawId.HasValue ? rawId.Value.ToString() : "NULL")} blendedId={(blendedId.HasValue ? blendedId.Value.ToString() : "NULL")}");
+            }
         }
 
         private void RebuildColorMap()
