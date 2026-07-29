@@ -78,7 +78,7 @@ namespace KitchenDrinksMod.Smoothie
 
         public override void SetupPrefab(GameObject prefab)
         {
-            PrefabBuilder.AttachCup(prefab, MaterialUtils.GetCustomMaterial("RedLiquid"), true);
+            PrefabBuilder.AttachCup(prefab, Mod.Bundle.LoadAsset<Material>("drinkup_smoothie_liquid"), true);
             prefab.ApplyMaterialToChild("Cup(Clone)/Model/Straw", MaterialUtils.GetMaterialArray("drinkup_orange_straw"));
 
             // Setup the ItemGroupView
