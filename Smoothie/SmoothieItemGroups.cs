@@ -249,7 +249,9 @@ namespace KitchenDrinksMod.Smoothie
 
         public override void PerformUpdate(int item_id, ItemList components, bool is_order = false)
         {
-            Mod.LogInfo($"[SmoothieDebug] PerformUpdate CALLED. item_id={item_id} components=[{string.Join(",", components)}]");
+            var componentsStr = new System.Text.StringBuilder();
+            foreach (var c in components) { componentsStr.Append(c).Append(','); }
+            Mod.LogInfo($"[SmoothieDebug] PerformUpdate CALLED. item_id={item_id} components=[{componentsStr}]");
             try
             {
                 RebuildColorMaps();
@@ -349,6 +351,7 @@ namespace KitchenDrinksMod.Smoothie
                 }
             }
             var liquidRenderer = Liquid.GetComponent<MeshRenderer>();
+            Mod.LogInfo($"[SmoothieDebug] colors.Count={colors.Count} Liquid.activeSelf(before)={Liquid.activeSelf}");
             if (colors.Count == 0)
             {
                 Liquid.SetActive(false);
@@ -379,6 +382,7 @@ namespace KitchenDrinksMod.Smoothie
                 }
             }
             var smallLiquidRenderer = Liquid2.GetComponent<MeshRenderer>();
+            Mod.LogInfo($"[SmoothieDebug] smallLiquidColors.Count={smallLiquidColors.Count}");
             if (smallLiquidColors.Count == 0)
             {
                 Liquid2.SetActive(false);

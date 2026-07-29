@@ -133,7 +133,10 @@ namespace KitchenDrinksMod.Smoothie
                 }).ToHashSet();
             public override List<string> StartingNameSet => new()
             {
-                "Smoothies"
+                "A Peeling Blends",
+                "All Shook Up",
+                "Mix It Real Good",
+                "Whirled Peace"
             };
             public override DishType Type => _key == 0 ? DishType.Base : DishType.Extra;
             public override DishCustomerChange CustomerMultiplier => DishCustomerChange.SmallDecrease;

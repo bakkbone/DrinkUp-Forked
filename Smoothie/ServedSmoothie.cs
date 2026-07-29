@@ -146,7 +146,9 @@ namespace KitchenDrinksMod.Smoothie
 
         public override void PerformUpdate(int item_id, ItemList components, bool is_order = false)
         {
-            Mod.LogInfo($"[SmoothieDebug][Served] PerformUpdate CALLED. item_id={item_id} components=[{string.Join(",", components)}]");
+            var componentsStr = new System.Text.StringBuilder();
+            foreach (var c in components) { componentsStr.Append(c).Append(','); }
+            Mod.LogInfo($"[SmoothieDebug][Served] PerformUpdate CALLED. item_id={item_id} components=[{componentsStr}]");
             try
             {
                 RebuildColorMap();
@@ -219,6 +221,7 @@ namespace KitchenDrinksMod.Smoothie
             }
 
             var liquidRenderer = Liquid.GetComponent<MeshRenderer>();
+            Mod.LogInfo($"[SmoothieDebug][Served] colors.Count={colors.Count} Liquid={(Liquid == null ? "NULL" : Liquid.name)} liquidRenderer.sharedMaterial={(liquidRenderer == null || liquidRenderer.sharedMaterial == null ? "NULL" : liquidRenderer.sharedMaterial.name)}");
             if (colors.Count == 0)
             {
                 Liquid.SetActive(false);
