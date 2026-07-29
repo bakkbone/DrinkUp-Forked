@@ -216,21 +216,27 @@ namespace KitchenDrinksMod.Smoothie
             // Setup() can run before ingredient.BlendedEquivalent's dynamically-registered
             // "X - blended" items are reliably resolvable via Refs.Find - by the time
             // PerformUpdate actually runs (live gameplay), all game data is guaranteed loaded.
-            // NOTE: keyed by ingredient.Item (raw), not ingredient.BlendedEquivalent.
-            // The dynamically-generated "X - blended" CustomItem types (BlendedSmoothieIngredient<DummyClasses.Dn>)
-            // reliably fail KitchenLib's GDO registration/auto-fix step (confirmed via player log -
-            // every one of them logs "Failed to register correctly. Attempting to fix..." and never
-            // gets a matching "Successfully fixed", unlike every other mod's items in the same session).
-            // Since those items never become fully valid, keying on them here never matches the
-            // actual component IDs at runtime. The raw Item is reliable (same pattern ComponentGroups
-            // and SmallColorModifierMap already use successfully), so use that instead.
+            //
+            // NOTE: keyed by BOTH ingredient.Item (raw) AND ingredient.BlendedEquivalent.
+            // Confirmed via player log + an ID cross-reference table: this shared view handles
+            // two different item states (SmoothieRaw and SmoothieBlended) which represent their
+            // components using two totally different ID spaces - "components" contains raw
+            // ingredient IDs while unblended/raw, but switches to blended-equivalent IDs once
+            // actually blended. Raw and blended IDs are always distinct numbers (confirmed via
+            // the same table), so merging both into one dictionary is safe - no collision risk.
             ColorModifiers = SmoothieIngredients.AllIngredients
-                .SelectMany(ingredient => ingredient.Item != null ? new List<LiquidColor>() {
-                    new LiquidColor {
-                        Item = ingredient.Item,
-                        Color = ingredient.Color
+                .SelectMany(ingredient => {
+                    var list = new List<LiquidColor>();
+                    if (ingredient.Item != null)
+                    {
+                        list.Add(new LiquidColor { Item = ingredient.Item, Color = ingredient.Color });
                     }
-                } : new())
+                    if (ingredient.BlendedEquivalent != null)
+                    {
+                        list.Add(new LiquidColor { Item = ingredient.BlendedEquivalent, Color = ingredient.Color });
+                    }
+                    return list;
+                })
                 .ToList();
 
             ColorModifierMap = ColorModifiers.ToDictionary(el => el.Item.ID, el => el.Color);

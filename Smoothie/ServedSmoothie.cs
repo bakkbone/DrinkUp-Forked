@@ -125,27 +125,29 @@ namespace KitchenDrinksMod.Smoothie
                 .ToList();
 
             Liquid = prefab.GetChild("Cup(Clone)/Model/Liquid");
-
-            foreach (var ingredient in SmoothieIngredients.AllIngredients)
-            {
-                var rawId = ingredient.Item?.ID;
-                var blendedId = ingredient.BlendedEquivalent?.ID;
-                Mod.LogInfo($"[SmoothieDebug][IDTable] {ingredient.Name}: rawId={(rawId.HasValue ? rawId.Value.ToString() : "NULL")} blendedId={(blendedId.HasValue ? blendedId.Value.ToString() : "NULL")}");
-            }
         }
 
         private void RebuildColorMap()
         {
             // See KitchenDrinksMod.Smoothie.SmoothieItemGroups.BlenderCupItemGroupView.RebuildColorMaps
-            // for why this is keyed by ingredient.Item (raw) and rebuilt per-call rather than cached
-            // once in Setup().
+            // for the full explanation. Confirmed via the [SmoothieDebug][IDTable] cross-reference
+            // that the served item's components are represented entirely by blended-equivalent IDs
+            // (e.g. milk's raw ID never appears once served, only its BlendedEquivalent ID does) -
+            // so both are included here for safety/consistency with the jug, but in practice only
+            // the blended-equivalent branch ever matches for this particular view.
             ColorModifiers = SmoothieIngredients.AllIngredients
-                .SelectMany(ingredient => ingredient.Item != null ? new List<LiquidColor>() {
-                    new LiquidColor {
-                        Item = ingredient.Item,
-                        Color = ingredient.Color
+                .SelectMany(ingredient => {
+                    var list = new List<LiquidColor>();
+                    if (ingredient.Item != null)
+                    {
+                        list.Add(new LiquidColor { Item = ingredient.Item, Color = ingredient.Color });
                     }
-                } : new())
+                    if (ingredient.BlendedEquivalent != null)
+                    {
+                        list.Add(new LiquidColor { Item = ingredient.BlendedEquivalent, Color = ingredient.Color });
+                    }
+                    return list;
+                })
                 .ToList();
 
             ColorModifierMap = ColorModifiers.ToDictionary(el => el.Item.ID, el => el.Color);
