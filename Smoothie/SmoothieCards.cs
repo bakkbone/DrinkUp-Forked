@@ -1,4 +1,5 @@
-﻿using ApplianceLib.Customs.GDO;
+﻿using ApplianceLib.Api.Prefab;
+using ApplianceLib.Customs.GDO;
 using KitchenData;
 using KitchenDrinksMod.Util;
 using KitchenLib.Customs;
@@ -61,11 +62,37 @@ namespace KitchenDrinksMod.Smoothie
                 _ingredients = ingredients;
             }
 
+            // The lobby blueprint/icon needs its own dedicated GameObject - there's no
+            // pre-authored "served smoothie" Unity asset to reuse (ServedSmoothie builds its
+            // visual entirely at runtime via PrefabBuilder.AttachCup), so this builds an
+            // equivalent small cup+liquid model just for icon display, using a fixed color
+            // rather than the dynamic gameplay liquid (which defaults to a very pale,
+            // mostly-transparent base until an actual ingredient tints it).
+            //
+            // The cup is tilted by rotating an intermediate holder object rather than the icon
+            // root itself, matching the structure ApplianceLib's own BobaCupIconPrefab uses
+            // (root at identity, rotation applied to the nested cup instance) - this appears to
+            // be what the icon camera actually respects.
+            private static GameObject GetIconPrefab()
+            {
+                var icon = Prefabs.Create("SmoothieDishIcon");
+                if (icon.transform.childCount == 0)
+                {
+                    var cupHolder = new GameObject("CupHolder");
+                    cupHolder.transform.parent = icon.transform;
+                    cupHolder.transform.localPosition = Vector3.zero;
+                    cupHolder.transform.localRotation = Quaternion.Euler(70, 0, 0);
+
+                    PrefabBuilder.AttachCup(cupHolder, Mod.Bundle.LoadAsset<Material>("drinkup_smoothie_icon_liquid"), true);
+                }
+                return icon;
+            }
+
             public override string UniqueNameID => $"smoothie dish {_key}";
             public override bool IsAvailableAsLobbyOption => _key == 0;
             public override bool RequiredNoDishItem => true;
-            public override GameObject DisplayPrefab => Refs.Find<Dish>(DishReferences.BurgerBase).DisplayPrefab;
-            public override GameObject IconPrefab => Refs.Find<Dish>(DishReferences.BurgerBase).IconPrefab;
+            public override GameObject DisplayPrefab => GetIconPrefab();
+            public override GameObject IconPrefab => GetIconPrefab();
             public override List<Unlock> HardcodedRequirements => _key == 0 ? new() : new() { Refs.Find<Dish>(Mod.MOD_GUID, "smoothie dish 0") };
             public override HashSet<Dish.IngredientUnlock> IngredientsUnlocks => _ingredients
                 .Select(ingredient => new Dish.IngredientUnlock
