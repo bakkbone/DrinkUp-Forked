@@ -249,8 +249,18 @@ namespace KitchenDrinksMod.Smoothie
 
         public new void PerformUpdate(int item_id, ItemList components)
         {
-            RebuildColorMaps();
-            Mod.LogInfo($"[SmoothieDebug] components=[{string.Join(",", components)}] ColorModifierMap keys=[{string.Join(",", ColorModifierMap.Keys)}] SmallColorModifierMap keys=[{string.Join(",", SmallColorModifierMap.Keys)}]");
+            Mod.LogInfo($"[SmoothieDebug] PerformUpdate CALLED. item_id={item_id} components=[{string.Join(",", components)}]");
+            try
+            {
+                RebuildColorMaps();
+                Mod.LogInfo($"[SmoothieDebug] ColorModifierMap keys=[{string.Join(",", ColorModifierMap.Keys)}] SmallColorModifierMap keys=[{string.Join(",", SmallColorModifierMap.Keys)}]");
+            }
+            catch (System.Exception e)
+            {
+                Mod.LogInfo($"[SmoothieDebug] EXCEPTION in RebuildColorMaps: {e}");
+            }
+            try
+            {
             if (SubviewPrefab != null)
             {
                 if (Subview == null)
@@ -388,6 +398,11 @@ namespace KitchenDrinksMod.Smoothie
                 Liquid2.SetActive(true);
 
                 smallLiquidRenderer.materials = new Material[] { mat, mat, mat, mat };
+            }
+            }
+            catch (System.Exception e)
+            {
+                Mod.LogInfo($"[SmoothieDebug] EXCEPTION in rest of PerformUpdate: {e}");
             }
         }
     }

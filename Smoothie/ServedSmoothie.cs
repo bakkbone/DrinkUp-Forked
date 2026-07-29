@@ -124,22 +124,40 @@ namespace KitchenDrinksMod.Smoothie
                 })
                 .ToList();
 
+            Liquid = prefab.GetChild("Cup(Clone)/Model/Liquid");
+        }
+
+        private void RebuildColorMap()
+        {
+            // See KitchenDrinksMod.Smoothie.SmoothieItemGroups.BlenderCupItemGroupView.RebuildColorMaps
+            // for why this is keyed by ingredient.Item (raw) and rebuilt per-call rather than cached
+            // once in Setup().
             ColorModifiers = SmoothieIngredients.AllIngredients
-                .SelectMany(ingredient => new List<LiquidColor>() {
+                .SelectMany(ingredient => ingredient.Item != null ? new List<LiquidColor>() {
                     new LiquidColor {
-                        Item = ingredient.BlendedEquivalent,
+                        Item = ingredient.Item,
                         Color = ingredient.Color
                     }
-                })
+                } : new())
                 .ToList();
 
             ColorModifierMap = ColorModifiers.ToDictionary(el => el.Item.ID, el => el.Color);
-
-            Liquid = prefab.GetChild("Cup(Clone)/Model/Liquid");
         }
 
         public new void PerformUpdate(int item_id, ItemList components)
         {
+            Mod.LogInfo($"[SmoothieDebug][Served] PerformUpdate CALLED. item_id={item_id} components=[{string.Join(",", components)}]");
+            try
+            {
+                RebuildColorMap();
+                Mod.LogInfo($"[SmoothieDebug][Served] ColorModifierMap keys=[{string.Join(",", ColorModifierMap.Keys)}]");
+            }
+            catch (System.Exception e)
+            {
+                Mod.LogInfo($"[SmoothieDebug][Served] EXCEPTION in RebuildColorMap: {e}");
+            }
+            try
+            {
             if (SubviewPrefab != null)
             {
                 if (Subview == null)
@@ -220,6 +238,11 @@ namespace KitchenDrinksMod.Smoothie
                 Liquid.SetActive(true);
 
                 liquidRenderer.materials = new Material[] { mat, mat, mat, mat };
+            }
+            }
+            catch (System.Exception e)
+            {
+                Mod.LogInfo($"[SmoothieDebug][Served] EXCEPTION in rest of PerformUpdate: {e}");
             }
         }
     }
