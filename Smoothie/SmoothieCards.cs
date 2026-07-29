@@ -78,12 +78,23 @@ namespace KitchenDrinksMod.Smoothie
                 var icon = Prefabs.Create("SmoothieDishIcon");
                 if (icon.transform.childCount == 0)
                 {
-                    var cupHolder = new GameObject("CupHolder");
-                    cupHolder.transform.parent = icon.transform;
-                    cupHolder.transform.localPosition = Vector3.zero;
-                    cupHolder.transform.localRotation = Quaternion.Euler(70, 0, 0);
+                    PrefabBuilder.AttachCup(icon, Mod.Bundle.LoadAsset<Material>("drinkup_smoothie_icon_liquid"), true);
 
-                    PrefabBuilder.AttachCup(cupHolder, Mod.Bundle.LoadAsset<Material>("drinkup_smoothie_icon_liquid"), true);
+                    // AttachCup names its instantiated child "Cup(Clone)" (confirmed via the
+                    // existing "Cup(Clone)/Model/Liquid" lookup in ServedSmoothie.cs) - rotate
+                    // that specific object directly rather than a wrapper, to remove any doubt
+                    // about whether a parent's rotation is actually propagating to it.
+                    var cup = icon.transform.Find("Cup(Clone)");
+                    if (cup != null)
+                    {
+                        cup.localRotation = Quaternion.Euler(70, 0, 0);
+                    }
+                    else
+                    {
+                        var names = new System.Text.StringBuilder();
+                        foreach (Transform child in icon.transform) { names.Append(child.name).Append(','); }
+                        Mod.LogInfo($"[SmoothieDebug][Icon] 'Cup(Clone)' not found. Actual children=[{names}]");
+                    }
                 }
                 return icon;
             }
