@@ -80,6 +80,9 @@ namespace KitchenDrinksMod.Smoothie
                 {
                     PrefabBuilder.AttachCup(icon, Mod.Bundle.LoadAsset<Material>("drinkup_smoothie_icon_liquid"), true);
 
+                    icon.transform.localScale = Vector3.one * 3.6f;
+                    icon.transform.localPosition = new Vector3(0.35f, -1.0f, 0);
+
                     // AttachCup names its instantiated child "Cup(Clone)" (confirmed via the
                     // existing "Cup(Clone)/Model/Liquid" lookup in ServedSmoothie.cs) - rotate
                     // that specific object directly rather than a wrapper, to remove any doubt
