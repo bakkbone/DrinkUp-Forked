@@ -1,5 +1,4 @@
-﻿using ApplianceLib.Api.Prefab;
-using ApplianceLib.Customs.GDO;
+﻿using ApplianceLib.Customs.GDO;
 using KitchenData;
 using KitchenDrinksMod.Util;
 using KitchenLib.Customs;
@@ -62,45 +61,17 @@ namespace KitchenDrinksMod.Smoothie
                 _ingredients = ingredients;
             }
 
-            // The lobby blueprint/icon needs its own dedicated GameObject - there's no
-            // pre-authored "served smoothie" Unity asset to reuse (ServedSmoothie builds its
-            // visual entirely at runtime via PrefabBuilder.AttachCup), so this builds an
-            // equivalent small cup+liquid model just for icon display, using a fixed color
-            // rather than the dynamic gameplay liquid (which defaults to a very pale,
-            // mostly-transparent base until an actual ingredient tints it).
-            //
-            // The cup is tilted by rotating an intermediate holder object rather than the icon
-            // root itself, matching the structure ApplianceLib's own BobaCupIconPrefab uses
-            // (root at identity, rotation applied to the nested cup instance) - this appears to
-            // be what the icon camera actually respects.
-            private static GameObject GetIconPrefab()
-            {
-                var icon = Prefabs.Create("SmoothieDishIcon");
-                if (icon.transform.childCount == 0)
-                {
-                    PrefabBuilder.AttachCup(icon, Mod.Bundle.LoadAsset<Material>("drinkup_smoothie_icon_liquid"), true);
-
-                    icon.transform.localScale = Vector3.one * 3.6f;
-                    icon.transform.localPosition = new Vector3(0.35f, -1.0f, 0);
-
-                    // AttachCup names its instantiated child "Cup(Clone)" (confirmed via the
-                    // existing "Cup(Clone)/Model/Liquid" lookup in ServedSmoothie.cs) - rotate
-                    // that specific object directly rather than a wrapper, to remove any doubt
-                    // about whether a parent's rotation is actually propagating to it.
-                    var cup = icon.transform.Find("Cup(Clone)");
-                    if (cup != null)
-                    {
-                        cup.localRotation = Quaternion.Euler(70, 0, 0);
-                    }
-                    else
-                    {
-                        var names = new System.Text.StringBuilder();
-                        foreach (Transform child in icon.transform) { names.Append(child.name).Append(','); }
-                        Mod.LogInfo($"[SmoothieDebug][Icon] 'Cup(Clone)' not found. Actual children=[{names}]");
-                    }
-                }
-                return icon;
-            }
+            // Static prefab authored directly in the Unity project (Assets/Smoothie/SmoothieDishIcon.prefab),
+            // nesting CupModel.fbx with the same baseline rotation/scale Cup.prefab itself uses
+            // (X: -90, scale 4) and drinkup_smoothie_icon_liquid assigned to "Body2" (identified
+            // by decoding the FBX geometry directly - a thin disc near the top of the cup,
+            // matching a liquid surface; Body1 is the cup, Body4/5/6 are ice cream scoops,
+            // Body7 is the straw). Matches the same pattern ApplianceLib's own
+            // BobaCupIconPrefab/Prefabs.Find("BobaCupIconPrefab") uses. Replaces an earlier
+            // runtime-built version (PrefabBuilder.AttachCup) whose position/rotation never
+            // responded reliably to any transform manipulation - going through a real static
+            // asset avoids that entirely.
+            private static GameObject GetIconPrefab() => Prefabs.Find("SmoothieDishIcon");
 
             public override string UniqueNameID => $"smoothie dish {_key}";
             public override bool IsAvailableAsLobbyOption => _key == 0;
@@ -128,9 +99,19 @@ namespace KitchenDrinksMod.Smoothie
             {
                 get
                 {
-                    var instructions = _ingredients.Select(ing => ing.InstructionsBlurb).ToList();
-                    instructions[instructions.Count - 1] = "or " + instructions[instructions.Count - 1];
-                    return string.Join(", ", instructions);
+                    // Milk and ice are excluded from the recipe text specifically (they still
+                    // count as real ingredients everywhere else - unlocks, minimum ingredients,
+                    // required processes, etc. - this only affects what gets listed here).
+                    var instructions = _ingredients
+                        .Where(ing => ing.Name != "milk" && ing.Name != "ice")
+                        .Select(ing => ing.InstructionsBlurb)
+                        .ToList();
+                    if (instructions.Count == 0)
+                    {
+                        return "";
+                    }
+                    //instructions[instructions.Count - 1] = "or " + instructions[instructions.Count - 1];
+                    return string.Join("/", instructions);
                 }
             }
             public override Dictionary<Locale, string> Recipe
@@ -138,12 +119,11 @@ namespace KitchenDrinksMod.Smoothie
                 get
                 {
 
-
                     return new()
                     {
                         {
                             Locale.English,
-                            $"Add {_instructions} to a blender and blend to create a smoothie mixture."
+                            $"Add milk, ice, and any two of {_instructions} to a blender, and blend to create a smoothie mixture."
                         }
                     };
                 }

@@ -93,7 +93,7 @@ namespace KitchenDrinksMod.Smoothie
             {
                 Name = "bananas",
                 BaseItem = () => Refs.Find<Item>(IngredientLib.References.GetIngredient("chopped banana")),
-                Instructions = "peeled and chopped bananas",
+                Instructions = "chopped banana",
                 CardNumber = 0,
                 StartingIngredients = new() { () => Refs.Find<Item>(IngredientLib.References.GetIngredient("banana")) },
                 Color = MakeColor(255, 251, 201, 255),
@@ -128,7 +128,7 @@ namespace KitchenDrinksMod.Smoothie
             {
                 Name = "lemons",
                 BaseItem = () => Refs.Find<Item>(ItemReferences.LemonSliced),
-                Instructions = "chopped lemons",
+                Instructions = "chopped lemon",
                 CardNumber = 1,
                 StartingIngredients = new() { () => Refs.Find<Item>(ItemReferences.Lemon) },
                 Color = MakeColor(204, 187, 52, 255),
@@ -140,7 +140,7 @@ namespace KitchenDrinksMod.Smoothie
             {
                 Name = "limes",
                 BaseItem = () => Refs.Find<Item>(IngredientLib.References.GetIngredient("chopped lime")),
-                Instructions = "chopped limes",
+                Instructions = "chopped lime",
                 CardNumber = 1,
                 StartingIngredients = new() { () => Refs.Find<Item>(IngredientLib.References.GetIngredient("lime")) },
                 Color = MakeColor(83, 146, 49, 255),
@@ -167,7 +167,7 @@ namespace KitchenDrinksMod.Smoothie
                 StartingIngredients = new() { () => Refs.Find<Item>(ItemReferences.Sugar) },
                 RequiredProcesses = new() { () => Refs.Cook },
                 Color = MakeColor(198, 142, 23, 255),
-                ColorblindLabel = "Cr",
+                ColorblindLabel = "Cml",
                 IconString = MakeIcon("caramel"),
                 UnblendedModelColor = MakeColor(198, 142, 23, 255),
             },
@@ -179,7 +179,7 @@ namespace KitchenDrinksMod.Smoothie
                 CardNumber = 2,
                 StartingIngredients = new() { () => Refs.Find<Item>(ItemReferences.Cranberries) },
                 Color = MakeColor(238, 104, 16, 255),
-                ColorblindLabel = "Cr",
+                ColorblindLabel = "Cra",
                 IconString = MakeIcon("cranberry"),
                 UnblendedModelChild = "Ingredients/Cranberries",
             },
@@ -210,7 +210,7 @@ namespace KitchenDrinksMod.Smoothie
             {
                 Name = "pumpkins",
                 BaseItem = () => Refs.Find<Item>(ItemReferences.PumpkinPieces),
-                Instructions = "pumpkin chunks",
+                Instructions = "chopped pumpkin",
                 CardNumber = 3,
                 StartingIngredients = new() { () => Refs.Find<Item>(ItemReferences.Pumpkin) },
                 Color = MakeColor(247, 187, 148, 255),
