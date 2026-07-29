@@ -218,12 +218,11 @@ namespace KitchenDrinksMod.Smoothie
             // PerformUpdate actually runs (live gameplay), all game data is guaranteed loaded.
             //
             // NOTE: keyed by BOTH ingredient.Item (raw) AND ingredient.BlendedEquivalent.
-            // Confirmed via player log + an ID cross-reference table: this shared view handles
-            // two different item states (SmoothieRaw and SmoothieBlended) which represent their
-            // components using two totally different ID spaces - "components" contains raw
-            // ingredient IDs while unblended/raw, but switches to blended-equivalent IDs once
-            // actually blended. Raw and blended IDs are always distinct numbers (confirmed via
-            // the same table), so merging both into one dictionary is safe - no collision risk.
+            // This shared view handles two different item states (SmoothieRaw and SmoothieBlended)
+            // which represent their components using two different ID spaces - "components"
+            // contains raw ingredient IDs while unblended, but switches to blended-equivalent IDs
+            // once actually blended. Raw and blended IDs are always distinct numbers, so merging
+            // both into one dictionary is safe - no collision risk.
             ColorModifiers = SmoothieIngredients.AllIngredients
                 .SelectMany(ingredient => {
                     var list = new List<LiquidColor>();
@@ -255,20 +254,8 @@ namespace KitchenDrinksMod.Smoothie
 
         public override void PerformUpdate(int item_id, ItemList components, bool is_order = false)
         {
-            var componentsStr = new System.Text.StringBuilder();
-            foreach (var c in components) { componentsStr.Append(c).Append(','); }
-            Mod.LogInfo($"[SmoothieDebug] PerformUpdate CALLED. item_id={item_id} components=[{componentsStr}]");
-            try
-            {
-                RebuildColorMaps();
-                Mod.LogInfo($"[SmoothieDebug] ColorModifierMap keys=[{string.Join(",", ColorModifierMap.Keys)}] SmallColorModifierMap keys=[{string.Join(",", SmallColorModifierMap.Keys)}]");
-            }
-            catch (System.Exception e)
-            {
-                Mod.LogInfo($"[SmoothieDebug] EXCEPTION in RebuildColorMaps: {e}");
-            }
-            try
-            {
+            RebuildColorMaps();
+
             if (SubviewPrefab != null)
             {
                 if (Subview == null)
@@ -357,7 +344,6 @@ namespace KitchenDrinksMod.Smoothie
                 }
             }
             var liquidRenderer = Liquid.GetComponent<MeshRenderer>();
-            Mod.LogInfo($"[SmoothieDebug] colors.Count={colors.Count} Liquid.activeSelf(before)={Liquid.activeSelf}");
             if (colors.Count == 0)
             {
                 Liquid.SetActive(false);
@@ -388,7 +374,6 @@ namespace KitchenDrinksMod.Smoothie
                 }
             }
             var smallLiquidRenderer = Liquid2.GetComponent<MeshRenderer>();
-            Mod.LogInfo($"[SmoothieDebug] smallLiquidColors.Count={smallLiquidColors.Count}");
             if (smallLiquidColors.Count == 0)
             {
                 Liquid2.SetActive(false);
@@ -408,11 +393,6 @@ namespace KitchenDrinksMod.Smoothie
                 Liquid2.SetActive(true);
 
                 smallLiquidRenderer.materials = new Material[] { mat, mat, mat, mat };
-            }
-            }
-            catch (System.Exception e)
-            {
-                Mod.LogInfo($"[SmoothieDebug] EXCEPTION in rest of PerformUpdate: {e}");
             }
         }
     }

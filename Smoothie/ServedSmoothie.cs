@@ -130,11 +130,11 @@ namespace KitchenDrinksMod.Smoothie
         private void RebuildColorMap()
         {
             // See KitchenDrinksMod.Smoothie.SmoothieItemGroups.BlenderCupItemGroupView.RebuildColorMaps
-            // for the full explanation. Confirmed via the [SmoothieDebug][IDTable] cross-reference
-            // that the served item's components are represented entirely by blended-equivalent IDs
-            // (e.g. milk's raw ID never appears once served, only its BlendedEquivalent ID does) -
-            // so both are included here for safety/consistency with the jug, but in practice only
-            // the blended-equivalent branch ever matches for this particular view.
+            // for the full explanation. The served item's components are represented entirely by
+            // blended-equivalent IDs (e.g. milk's raw ID never appears once served, only its
+            // BlendedEquivalent ID does) - so both are included here for safety/consistency with
+            // the jug, but in practice only the blended-equivalent branch ever matches for this
+            // particular view.
             ColorModifiers = SmoothieIngredients.AllIngredients
                 .SelectMany(ingredient => {
                     var list = new List<LiquidColor>();
@@ -155,20 +155,8 @@ namespace KitchenDrinksMod.Smoothie
 
         public override void PerformUpdate(int item_id, ItemList components, bool is_order = false)
         {
-            var componentsStr = new System.Text.StringBuilder();
-            foreach (var c in components) { componentsStr.Append(c).Append(','); }
-            Mod.LogInfo($"[SmoothieDebug][Served] PerformUpdate CALLED. item_id={item_id} components=[{componentsStr}]");
-            try
-            {
-                RebuildColorMap();
-                Mod.LogInfo($"[SmoothieDebug][Served] ColorModifierMap keys=[{string.Join(",", ColorModifierMap.Keys)}]");
-            }
-            catch (System.Exception e)
-            {
-                Mod.LogInfo($"[SmoothieDebug][Served] EXCEPTION in RebuildColorMap: {e}");
-            }
-            try
-            {
+            RebuildColorMap();
+
             if (SubviewPrefab != null)
             {
                 if (Subview == null)
@@ -230,7 +218,6 @@ namespace KitchenDrinksMod.Smoothie
             }
 
             var liquidRenderer = Liquid.GetComponent<MeshRenderer>();
-            Mod.LogInfo($"[SmoothieDebug][Served] colors.Count={colors.Count} Liquid={(Liquid == null ? "NULL" : Liquid.name)} liquidRenderer.sharedMaterial={(liquidRenderer == null || liquidRenderer.sharedMaterial == null ? "NULL" : liquidRenderer.sharedMaterial.name)}");
             if (colors.Count == 0)
             {
                 Liquid.SetActive(false);
@@ -250,11 +237,6 @@ namespace KitchenDrinksMod.Smoothie
                 Liquid.SetActive(true);
 
                 liquidRenderer.materials = new Material[] { mat, mat, mat, mat };
-            }
-            }
-            catch (System.Exception e)
-            {
-                Mod.LogInfo($"[SmoothieDebug][Served] EXCEPTION in rest of PerformUpdate: {e}");
             }
         }
     }
