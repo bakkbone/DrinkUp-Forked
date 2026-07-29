@@ -247,7 +247,7 @@ namespace KitchenDrinksMod.Smoothie
             SmallColorModifierMap = SmallColorModifiers.ToDictionary(el => el.Item.ID, el => el.Color);
         }
 
-        public new void PerformUpdate(int item_id, ItemList components)
+        public override void PerformUpdate(int item_id, ItemList components, bool is_order = false)
         {
             Mod.LogInfo($"[SmoothieDebug] PerformUpdate CALLED. item_id={item_id} components=[{string.Join(",", components)}]");
             try
